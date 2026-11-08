@@ -1,0 +1,25 @@
+sources:
+  - name: raw_src
+    database: postgres
+    schema: raw
+    description: Данные для страхования
+    tables:
+      - name: claim_payments_dq
+        description: платежи клеймов
+      - name: claims_dq
+        description: страховые случаи
+        columns:
+          - name: estimated_amount
+            description: Оценка суммы
+      - name: customers_dq
+      - name: policies_dq
+    freshness:
+      warn_after:
+        count: 10
+        period: day
+      error_after:
+        count: 150
+        period: day
+      filter: current_timestamp::date - start_date::date < 90
+    loaded_at_field: start_date::timestamp
+
